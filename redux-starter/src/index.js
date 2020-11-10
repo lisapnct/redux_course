@@ -1,6 +1,29 @@
 import { compose, pipe } from "lodash/fp";
 import { Map } from "immutable";
 import { produce } from "immer";
+import store from "./store";
+import { bugAdded, bugResolved } from "./actions";
+
+const unsubscribe = store.subscribe(() => {
+  console.log("store changed", store.getState());
+});
+
+store.dispatch(bugAdded("big bug"));
+
+unsubscribe();
+
+// store.dispatch({
+//   type: actions.BUG_REMOVED,
+//   payload: {
+//     id: 1,
+//   },
+// });
+
+store.dispatch(bugResolved(1));
+
+console.log(store.getState());
+
+// --------------
 
 let input = "    Javascript   ";
 
@@ -57,5 +80,5 @@ function Publish(book) {
 
 let updatedBook = Publish(Book);
 
-console.log(Book);
-console.log(updatedBook);
+// console.log(Book);
+// console.log(updatedBook);
